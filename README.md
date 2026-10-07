@@ -1,6 +1,7 @@
 # Stocks Exporter
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/somethingwithproof/StocksExporter/badge)](https://scorecard.dev/viewer/?uri=github.com/somethingwithproof/StocksExporter)
 
 A native macOS app to export your Apple Stocks watchlist to CSV or JSON format.
 

@@ -1,5 +1,7 @@
 # Stocks Exporter
 
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+
 A native macOS app to export your Apple Stocks watchlist to CSV or JSON format.
 
 Apple provides no official way to export your Stocks watchlist data. This app solves that problem using two complementary methods:
@@ -43,6 +45,7 @@ Or open in Xcode and build.
 ## Privacy
 
 This app:
+
 - Only reads data from Apple's Stocks app
 - Does not connect to the internet
 - Does not collect or transmit any data

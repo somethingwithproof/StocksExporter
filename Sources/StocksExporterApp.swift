@@ -11,18 +11,19 @@ struct StocksExporterApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .environment(\.layoutDirection, L10n.currentLayoutDirection)
         }
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 800, height: 600)
         .commands {
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .importExport) {
-                Button("Export as CSV...") {
+                Button(L10n.string("menu.export_csv")) {
                     viewModel.exportCSV()
                 }
                 .keyboardShortcut("e", modifiers: [.command])
 
-                Button("Export as JSON...") {
+                Button(L10n.string("menu.export_json")) {
                     viewModel.exportJSON()
                 }
                 .keyboardShortcut("e", modifiers: [.command, .shift])
@@ -32,6 +33,7 @@ struct StocksExporterApp: App {
         Settings {
             SettingsView()
                 .environmentObject(viewModel)
+                .environment(\.layoutDirection, L10n.currentLayoutDirection)
         }
     }
 }

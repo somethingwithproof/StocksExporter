@@ -8,6 +8,19 @@ struct ExportColumn: Identifiable, Hashable, Codable {
     let name: String
     var isEnabled: Bool
 
+    var localizedName: String {
+        switch id {
+        case "symbol": return L10n.string("column.symbol")
+        case "name": return L10n.string("column.company_name")
+        case "price": return L10n.string("column.price")
+        case "change": return L10n.string("column.change")
+        case "changePercent": return L10n.string("column.change_percent")
+        case "marketCap": return L10n.string("column.market_cap")
+        case "volume": return L10n.string("column.volume")
+        default: return name
+        }
+    }
+
     static let allColumns: [ExportColumn] = [
         ExportColumn(id: "symbol", name: "Symbol", isEnabled: true),
         ExportColumn(id: "name", name: "Company Name", isEnabled: true),

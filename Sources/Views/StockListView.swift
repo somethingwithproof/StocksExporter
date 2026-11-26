@@ -12,8 +12,8 @@ struct StockListView: View {
             case .idle:
                 emptyStateView(
                     icon: "chart.line.uptrend.xyaxis",
-                    title: "Ready to Load",
-                    subtitle: "Click refresh to load your watchlist"
+                    title: L10n.string("list.ready_title"),
+                    subtitle: L10n.string("list.ready_subtitle")
                 )
             case .loading:
                 loadingView
@@ -21,14 +21,14 @@ struct StockListView: View {
                 if viewModel.stocks.isEmpty {
                     emptyStateView(
                         icon: "list.bullet.rectangle",
-                        title: "No Stocks Found",
-                        subtitle: "Add stocks to your Apple Stocks watchlist"
+                        title: L10n.string("list.empty_title"),
+                        subtitle: L10n.string("list.empty_subtitle")
                     )
                 } else {
                     stockTable
                 }
-            case .error(let message):
-                errorView(message: message)
+            case .error(let message, let kind):
+                errorView(message: message, kind: kind)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -39,25 +39,25 @@ struct StockListView: View {
             searchBar
 
             Table(viewModel.filteredStocks, selection: $viewModel.selectedStocks, sortOrder: $viewModel.sortOrder) {
-                TableColumn("Symbol", value: \.symbol) { stock in
+                TableColumn(L10n.string("column.symbol"), value: \.symbol) { stock in
                     Text(stock.symbol)
                         .font(.system(.body, design: .monospaced, weight: .semibold))
                 }
                 .width(min: 60, ideal: 80)
 
-                TableColumn("Name", value: \.name) { stock in
+                TableColumn(L10n.string("column.name"), value: \.name) { stock in
                     Text(stock.name)
                         .lineLimit(1)
                 }
                 .width(min: 150, ideal: 200)
 
-                TableColumn("Price") { stock in
+                TableColumn(L10n.string("column.price")) { stock in
                     Text(stock.formattedPrice)
                         .font(.system(.body, design: .monospaced))
                 }
                 .width(min: 80, ideal: 100)
 
-                TableColumn("Change") { stock in
+                TableColumn(L10n.string("column.change")) { stock in
                     HStack(spacing: 4) {
                         Image(systemName: stock.isPositive ? "arrow.up.right" : "arrow.down.right")
                             .font(.caption2)
@@ -68,7 +68,7 @@ struct StockListView: View {
                 }
                 .width(min: 80, ideal: 100)
 
-                TableColumn("Change %") { stock in
+                TableColumn(L10n.string("column.change_percent")) { stock in
                     Text(stock.formattedChangePercent)
                         .font(.system(.body, design: .monospaced))
                         .foregroundStyle(stock.isPositive ? .green : .red)
@@ -88,7 +88,7 @@ struct StockListView: View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
-            TextField("Search stocks...", text: $viewModel.searchText)
+            TextField(L10n.string("list.search_placeholder"), text: $viewModel.searchText)
                 .textFieldStyle(.plain)
 
             if !viewModel.searchText.isEmpty {
@@ -107,12 +107,12 @@ struct StockListView: View {
 
     private var statusBar: some View {
         HStack {
-            Text("\(viewModel.filteredStocks.count) stocks")
+            Text(L10n.format("list.stocks_count", Int64(viewModel.filteredStocks.count)))
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
             if !viewModel.selectedStocks.isEmpty {
-                Text("• \(viewModel.selectedStocks.count) selected")
+                Text(L10n.format("list.selected_count", Int64(viewModel.selectedStocks.count)))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -128,7 +128,7 @@ struct StockListView: View {
         VStack(spacing: 16) {
             ProgressView()
                 .scaleEffect(1.5)
-            Text("Loading watchlist...")
+            Text(L10n.string("list.loading"))
                 .font(.headline)
                 .foregroundStyle(.secondary)
         }
@@ -150,19 +150,19 @@ struct StockListView: View {
                     await viewModel.refresh()
                 }
             } label: {
-                Label("Refresh", systemImage: "arrow.clockwise")
+                Label(L10n.string("toolbar.refresh"), systemImage: "arrow.clockwise")
             }
             .buttonStyle(.bordered)
         }
         .padding()
     }
 
-    private func errorView(message: String) -> some View {
+    private func errorView(message: String, kind: LoadingErrorKind) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 48))
                 .foregroundStyle(.orange)
-            Text("Error Loading Data")
+            Text(L10n.string("list.error_title"))
                 .font(.headline)
             Text(message)
                 .font(.subheadline)
@@ -171,20 +171,20 @@ struct StockListView: View {
                 .padding(.horizontal)
 
             HStack(spacing: 12) {
-                if message.contains("Accessibility") {
+                if kind == .accessibilityNotAuthorized {
                     Button {
                         viewModel.requestAccessibilityPermission()
                     } label: {
-                        Label("Enable Access", systemImage: "lock.open")
+                        Label(L10n.string("list.enable_access"), systemImage: "lock.open")
                     }
                     .buttonStyle(.bordered)
                 }
 
-                if message.contains("not running") {
+                if kind == .stocksAppNotRunning {
                     Button {
                         viewModel.launchStocksApp()
                     } label: {
-                        Label("Launch Stocks", systemImage: "play.fill")
+                        Label(L10n.string("list.launch_stocks"), systemImage: "play.fill")
                     }
                     .buttonStyle(.bordered)
                 }
@@ -194,7 +194,7 @@ struct StockListView: View {
                         await viewModel.refresh()
                     }
                 } label: {
-                    Label("Retry", systemImage: "arrow.clockwise")
+                    Label(L10n.string("list.retry"), systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.borderedProminent)
             }

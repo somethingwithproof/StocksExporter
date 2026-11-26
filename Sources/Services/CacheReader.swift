@@ -11,11 +11,11 @@ enum CacheError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .cacheNotFound:
-            return "Stock widget cache not found. Make sure you have the Stocks widget on your desktop or notification center."
+            return L10n.string("error.cache_not_found")
         case .invalidCacheFormat:
-            return "Cache file format is invalid or has changed."
+            return L10n.string("error.invalid_cache_format")
         case .parsingFailed(let detail):
-            return "Failed to parse cache: \(detail)"
+            return L10n.format("error.cache_parsing_failed", detail)
         }
     }
 }

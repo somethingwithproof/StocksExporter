@@ -9,13 +9,27 @@ enum DataSource: String, CaseIterable {
     case accessibility = "Stocks App (Accessibility)"
     case cache = "Widget Cache"
     case auto = "Auto-detect"
+
+    var localizedName: String {
+        switch self {
+        case .accessibility: return L10n.string("data_source.accessibility")
+        case .cache: return L10n.string("data_source.cache")
+        case .auto: return L10n.string("data_source.auto")
+        }
+    }
+}
+
+enum LoadingErrorKind: Equatable {
+    case accessibilityNotAuthorized
+    case stocksAppNotRunning
+    case other
 }
 
 enum LoadingState: Equatable {
     case idle
     case loading
     case loaded
-    case error(String)
+    case error(String, LoadingErrorKind = .other)
 }
 
 @MainActor
@@ -103,7 +117,16 @@ final class StocksViewModel: ObservableObject {
             lastRefresh = Date()
             loadingState = .loaded
         } catch {
-            loadingState = .error(error.localizedDescription)
+            let kind: LoadingErrorKind
+            switch error {
+            case AccessibilityError.notAuthorized:
+                kind = .accessibilityNotAuthorized
+            case AccessibilityError.stocksAppNotRunning:
+                kind = .stocksAppNotRunning
+            default:
+                kind = .other
+            }
+            loadingState = .error(error.localizedDescription, kind)
         }
     }
 

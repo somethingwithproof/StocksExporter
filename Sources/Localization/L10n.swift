@@ -5,7 +5,7 @@ import Foundation
 import SwiftUI
 
 enum L10n {
-    /// All 45 supported Apple localization identifiers shipped in Resources.
+    /// All 48 supported Apple localization identifiers shipped in Resources.
     static let supportedLocalizations: [String] = [
         // Phase 1 (20)
         "en",
@@ -54,7 +54,11 @@ enum L10n {
         "th",
         "ur",
         "ms",
-        "fil"
+        "fil",
+        // Phase 3 South Slavic (3)
+        "bs",
+        "hr",
+        "sr"
     ]
 
     /// All 6 right-to-left localization identifiers shipped in Resources.
@@ -107,9 +111,40 @@ enum L10n {
         return String(format: template, locale: Locale.current, arguments: arguments)
     }
 
+    /// Maps regional or script-tagged identifiers (such as `bs-BA`, `hr-HR`,
+    /// `sr-RS`, `sr-Cyrl`, `sr-Latn`) to their bundled `.lproj` identifier.
+    static func canonicalLocalization(for localization: String) -> String {
+        let trimmed = localization.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            return trimmed
+        }
+        let normalized = trimmed.replacingOccurrences(of: "_", with: "-")
+        if supportedLocalizations.contains(normalized) {
+            return normalized
+        }
+        if let exactCI = supportedLocalizations.first(where: {
+            $0.caseInsensitiveCompare(normalized) == .orderedSame
+        }) {
+            return exactCI
+        }
+        let lower = normalized.lowercased()
+        let base = lower.split(separator: "-").first.map(String.init) ?? lower
+        switch base {
+        case "bs":
+            return "bs"
+        case "hr":
+            return "hr"
+        case "sr":
+            return "sr"
+        default:
+            return normalized
+        }
+    }
+
     /// Returns a bundle pinned to a specific `.lproj` localization for verification and lookup.
     static func bundle(for localization: String) -> Bundle? {
-        guard let path = Bundle.module.path(forResource: localization, ofType: "lproj") else {
+        let resolved = canonicalLocalization(for: localization)
+        guard let path = Bundle.module.path(forResource: resolved, ofType: "lproj") else {
             return nil
         }
         return Bundle(path: path)

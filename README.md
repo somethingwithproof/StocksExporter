@@ -20,11 +20,11 @@ Apple provides no official way to export your Stocks watchlist data. This app so
 - **Column selection** - Choose which data fields to include
 - **Copy to clipboard** - Quick export without saving a file
 - **Persistent preferences** - Remember your export settings
-- **Localized interface** - Available in 45 languages
+- **Localized interface** - Available in 48 languages
 
 ## Supported Languages
 
-Stocks Exporter uses macOS system language preferences and includes full UI localizations for 45 languages (including automatic right-to-left layout support for Arabic, Persian, Hebrew, and Urdu) along with localized READMEs:
+Stocks Exporter uses macOS system language preferences and includes full UI localizations for 48 languages (including automatic right-to-left layout support for Arabic, Persian, Hebrew, and Urdu) along with localized READMEs:
 
 | Language | Locale | README | Language | Locale | README |
 | --- | --- | --- | --- | --- | --- |
@@ -50,7 +50,8 @@ Stocks Exporter uses macOS system language preferences and includes full UI loca
 | Bahasa Indonesia | `id` | [Bahasa Indonesia](./docs/i18n/id/README.md) | தமிழ் | `ta` | [தமிழ்](./docs/i18n/ta/README.md) |
 | తెలుగు | `te` | [తెలుగు](./docs/i18n/te/README.md) | ไทย | `th` | [ไทย](./docs/i18n/th/README.md) |
 | اردو | `ur` | [اردو](./docs/i18n/ur/README.md) | Bahasa Melayu | `ms` | [Bahasa Melayu](./docs/i18n/ms/README.md) |
-| Filipino | `fil` | [Filipino](./docs/i18n/fil/README.md) | | | |
+| Filipino | `fil` | [Filipino](./docs/i18n/fil/README.md) | Bosanski | `bs` | [Bosanski](./docs/i18n/bs/README.md) |
+| Hrvatski | `hr` | [Hrvatski](./docs/i18n/hr/README.md) | Српски | `sr` | [Српски](./docs/i18n/sr/README.md) |
 
 ## Requirements
 

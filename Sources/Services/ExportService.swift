@@ -78,7 +78,7 @@ final class ExportService: @unchecked Sendable {
     @MainActor
     func saveWithDialog(content: String, format: ExportFormat, suggestedName: String = "stocks-export") -> URL? {
         let savePanel = NSSavePanel()
-        savePanel.title = "Export Watchlist"
+        savePanel.title = L10n.string("export.title")
         savePanel.nameFieldStringValue = "\(suggestedName).\(format.fileExtension)"
 
         let utType: UTType = format == .csv ? .commaSeparatedText : .json

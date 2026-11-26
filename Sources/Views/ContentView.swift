@@ -34,9 +34,9 @@ struct ContentView: View {
                 await viewModel.refresh()
             }
         } label: {
-            Label("Refresh", systemImage: "arrow.clockwise")
+            Label(L10n.string("toolbar.refresh"), systemImage: "arrow.clockwise")
         }
-        .help("Refresh watchlist")
+        .help(L10n.string("toolbar.refresh_help"))
 
         Spacer()
 
@@ -44,9 +44,9 @@ struct ContentView: View {
             Button {
                 showingExportOptions = true
             } label: {
-                Label("Export", systemImage: "square.and.arrow.up")
+                Label(L10n.string("toolbar.export"), systemImage: "square.and.arrow.up")
             }
-            .help("Export watchlist")
+            .help(L10n.string("toolbar.export_help"))
         }
     }
 }
@@ -56,22 +56,22 @@ struct SidebarView: View {
 
     var body: some View {
         List {
-            Section("Data Source") {
-                Picker("Source", selection: $viewModel.dataSource) {
+            Section(L10n.string("sidebar.data_source")) {
+                Picker(L10n.string("sidebar.source"), selection: $viewModel.dataSource) {
                     ForEach(DataSource.allCases, id: \.self) { source in
-                        Text(source.rawValue).tag(source)
+                        Text(source.localizedName).tag(source)
                     }
                 }
                 .labelsHidden()
                 .pickerStyle(.inline)
             }
 
-            Section("Status") {
+            Section(L10n.string("sidebar.status")) {
                 statusContent
             }
 
             if let lastRefresh = viewModel.lastRefresh {
-                Section("Last Updated") {
+                Section(L10n.string("sidebar.last_updated")) {
                     Text(lastRefresh, style: .relative)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -88,10 +88,10 @@ struct SidebarView: View {
             Circle()
                 .fill(viewModel.isAccessibilityAuthorized ? .green : .orange)
                 .frame(width: 8, height: 8)
-            Text("Accessibility")
+            Text(L10n.string("sidebar.accessibility"))
             Spacer()
             if !viewModel.isAccessibilityAuthorized {
-                Button("Enable") {
+                Button(L10n.string("sidebar.enable")) {
                     viewModel.requestAccessibilityPermission()
                 }
                 .buttonStyle(.link)
@@ -103,10 +103,10 @@ struct SidebarView: View {
             Circle()
                 .fill(viewModel.isStocksAppRunning ? .green : .gray)
                 .frame(width: 8, height: 8)
-            Text("Stocks App")
+            Text(L10n.string("sidebar.stocks_app"))
             Spacer()
             if !viewModel.isStocksAppRunning {
-                Button("Launch") {
+                Button(L10n.string("sidebar.launch")) {
                     viewModel.launchStocksApp()
                 }
                 .buttonStyle(.link)

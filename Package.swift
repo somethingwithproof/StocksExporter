@@ -6,6 +6,7 @@ import PackageDescription
 
 let package = Package(
     name: "StocksExporter",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v14)
     ],
@@ -15,7 +16,15 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "StocksExporter",
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Resources")
+            ]
+        ),
+        .testTarget(
+            name: "StocksExporterTests",
+            dependencies: ["StocksExporter"],
+            path: "Tests/StocksExporterTests"
         )
     ]
 )

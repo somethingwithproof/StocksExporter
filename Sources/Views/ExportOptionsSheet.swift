@@ -40,9 +40,9 @@ struct ExportOptionsSheet: View {
     private var headerView: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Export Watchlist")
+                Text(L10n.string("export.title"))
                     .font(.headline)
-                Text("\(viewModel.selectedStockItems.count) stocks selected")
+                Text(L10n.format("export.selected_stocks", Int64(viewModel.selectedStockItems.count)))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -63,10 +63,10 @@ struct ExportOptionsSheet: View {
 
     private var formatSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Format")
+            Text(L10n.string("export.format"))
                 .font(.subheadline.weight(.semibold))
 
-            Picker("Format", selection: $selectedFormat) {
+            Picker(L10n.string("export.format"), selection: $selectedFormat) {
                 ForEach(ExportFormat.allCases, id: \.self) { format in
                     Text(format.rawValue).tag(format)
                 }
@@ -75,7 +75,7 @@ struct ExportOptionsSheet: View {
             .labelsHidden()
 
             if selectedFormat == .csv {
-                Toggle("Include header row", isOn: $viewModel.exportSettings.includeHeader)
+                Toggle(L10n.string("export.include_header"), isOn: $viewModel.exportSettings.includeHeader)
                     .font(.subheadline)
             }
         }
@@ -83,7 +83,7 @@ struct ExportOptionsSheet: View {
 
     private var columnsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Columns to Export")
+            Text(L10n.string("export.columns_title"))
                 .font(.subheadline.weight(.semibold))
 
             LazyVGrid(columns: [
@@ -92,7 +92,7 @@ struct ExportOptionsSheet: View {
                 GridItem(.flexible())
             ], spacing: 8) {
                 ForEach(viewModel.exportSettings.columns) { column in
-                    Toggle(column.name, isOn: Binding(
+                    Toggle(column.localizedName, isOn: Binding(
                         get: { column.isEnabled },
                         set: { _ in viewModel.toggleColumn(column) }
                     ))
@@ -106,10 +106,10 @@ struct ExportOptionsSheet: View {
     private var previewSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Preview")
+                Text(L10n.string("export.preview"))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text("First 5 rows")
+                Text(L10n.string("export.preview_limit"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -136,13 +136,13 @@ struct ExportOptionsSheet: View {
                     showCopiedAlert = false
                 }
             } label: {
-                Label("Copy", systemImage: "doc.on.doc")
+                Label(L10n.string("export.copy"), systemImage: "doc.on.doc")
             }
             .buttonStyle(.bordered)
 
             Spacer()
 
-            Button("Cancel") {
+            Button(L10n.string("export.cancel")) {
                 dismiss()
             }
             .keyboardShortcut(.cancelAction)
@@ -156,7 +156,7 @@ struct ExportOptionsSheet: View {
                 }
                 dismiss()
             } label: {
-                Label("Export", systemImage: "square.and.arrow.up")
+                Label(L10n.string("toolbar.export"), systemImage: "square.and.arrow.up")
             }
             .buttonStyle(.borderedProminent)
             .keyboardShortcut(.defaultAction)
@@ -168,7 +168,7 @@ struct ExportOptionsSheet: View {
         HStack {
             Image(systemName: "checkmark.circle.fill")
                 .foregroundStyle(.green)
-            Text("Copied to clipboard")
+            Text(L10n.string("export.copied_alert"))
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)

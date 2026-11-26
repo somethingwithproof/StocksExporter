@@ -17,12 +17,12 @@ struct StocksExporterApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .importExport) {
-                Button("Export as CSV...") {
+                Button(L10n.string("menu.export_csv")) {
                     viewModel.exportCSV()
                 }
                 .keyboardShortcut("e", modifiers: [.command])
 
-                Button("Export as JSON...") {
+                Button(L10n.string("menu.export_json")) {
                     viewModel.exportJSON()
                 }
                 .keyboardShortcut("e", modifiers: [.command, .shift])

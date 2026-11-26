@@ -14,15 +14,15 @@ enum AccessibilityError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notAuthorized:
-            return "Accessibility access not authorized. Please enable in System Settings > Privacy & Security > Accessibility."
+            return L10n.string("error.accessibility_not_authorized")
         case .stocksAppNotRunning:
-            return "Stocks app is not running. Please open the Stocks app first."
+            return L10n.string("error.stocks_not_running")
         case .couldNotGetApplication:
-            return "Could not connect to Stocks app."
+            return L10n.string("error.could_not_connect")
         case .couldNotFindWatchlist:
-            return "Could not find watchlist data in Stocks app."
+            return L10n.string("error.watchlist_not_found")
         case .parsingFailed(let detail):
-            return "Failed to parse stock data: \(detail)"
+            return L10n.format("error.parsing_failed", detail)
         }
     }
 }

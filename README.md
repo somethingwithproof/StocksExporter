@@ -20,6 +20,12 @@ Apple provides no official way to export your Stocks watchlist data. This app so
 - **Column selection** - Choose which data fields to include
 - **Copy to clipboard** - Quick export without saving a file
 - **Persistent preferences** - Remember your export settings
+- **Localized interface** - Available in 20 languages
+
+## Supported Languages
+
+Stocks Exporter uses macOS system language preferences and includes localizations for 20 languages:
+English (`en`), German (`de`), Spanish (`es`), French (`fr`), Italian (`it`), Brazilian Portuguese (`pt-BR`), Dutch (`nl`), Russian (`ru`), Ukrainian (`uk`), Japanese (`ja`), Korean (`ko`), Simplified Chinese (`zh-Hans`), Traditional Chinese (`zh-Hant`), Arabic (`ar`), Hindi (`hi`), Polish (`pl`), Turkish (`tr`), Swedish (`sv`), Vietnamese (`vi`), and Indonesian (`id`).
 
 ## Requirements
 

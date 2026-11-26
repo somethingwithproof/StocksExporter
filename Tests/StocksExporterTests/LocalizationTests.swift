@@ -26,15 +26,40 @@ final class LocalizationTests: XCTestCase {
         return dict
     }
 
-    func testAllFortyFiveLocalizationsPresent() {
-        XCTAssertEqual(L10n.supportedLocalizations.count, 45)
-        XCTAssertEqual(Set(L10n.supportedLocalizations).count, 45)
+    func testAllFortyEightLocalizationsPresent() {
+        XCTAssertEqual(L10n.supportedLocalizations.count, 48)
+        XCTAssertEqual(Set(L10n.supportedLocalizations).count, 48)
         for code in L10n.supportedLocalizations {
             XCTAssertNotNil(
                 L10n.bundle(for: code),
                 "Missing localization bundle for \(code)"
             )
         }
+    }
+
+    func testSouthSlavicTagResolutionAndDistinctness() throws {
+        XCTAssertEqual(L10n.canonicalLocalization(for: "bs-BA"), "bs")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "bs_BA"), "bs")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "hr-HR"), "hr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "hr_HR"), "hr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "sr-RS"), "sr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "sr-Cyrl"), "sr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "sr-Latn"), "sr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "sr-Cyrl-RS"), "sr")
+        XCTAssertEqual(L10n.canonicalLocalization(for: "sr-Latn-RS"), "sr")
+
+        XCTAssertEqual(L10n.string("list.error_title", localization: "bs-BA"), L10n.string("list.error_title", localization: "bs"))
+        XCTAssertEqual(L10n.string("list.error_title", localization: "hr-HR"), L10n.string("list.error_title", localization: "hr"))
+        XCTAssertEqual(L10n.string("list.error_title", localization: "sr-RS"), L10n.string("list.error_title", localization: "sr"))
+        XCTAssertEqual(L10n.string("list.error_title", localization: "sr-Cyrl"), L10n.string("list.error_title", localization: "sr"))
+        XCTAssertEqual(L10n.string("list.error_title", localization: "sr-Latn"), L10n.string("list.error_title", localization: "sr"))
+
+        let bs = try XCTUnwrap(loadStrings(for: "bs"))
+        let hr = try XCTUnwrap(loadStrings(for: "hr"))
+        let sr = try XCTUnwrap(loadStrings(for: "sr"))
+        XCTAssertNotEqual(bs, hr, "Bosnian and Croatian catalogs must be distinct")
+        XCTAssertNotEqual(bs, sr, "Bosnian and Serbian catalogs must be distinct")
+        XCTAssertNotEqual(hr, sr, "Croatian and Serbian catalogs must be distinct")
     }
 
     func testAllKeysPresentNonEmptyAndPreservePlaceholders() throws {

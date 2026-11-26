@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import Foundation
+import SwiftUI
 import XCTest
 @testable import StocksExporter
 
@@ -25,8 +26,9 @@ final class LocalizationTests: XCTestCase {
         return dict
     }
 
-    func testAllTwentyLocalizationsPresent() {
-        XCTAssertEqual(L10n.supportedLocalizations.count, 20)
+    func testAllFortyFiveLocalizationsPresent() {
+        XCTAssertEqual(L10n.supportedLocalizations.count, 45)
+        XCTAssertEqual(Set(L10n.supportedLocalizations).count, 45)
         for code in L10n.supportedLocalizations {
             XCTAssertNotNil(
                 L10n.bundle(for: code),
@@ -37,7 +39,7 @@ final class LocalizationTests: XCTestCase {
 
     func testAllKeysPresentNonEmptyAndPreservePlaceholders() throws {
         let english = try XCTUnwrap(loadStrings(for: "en"), "English Localizable.strings missing")
-        XCTAssertGreaterThanOrEqual(english.count, 68)
+        XCTAssertEqual(english.count, 68)
 
         for code in L10n.supportedLocalizations {
             let localized = try XCTUnwrap(loadStrings(for: code), "Missing Localizable.strings for \(code)")
@@ -62,6 +64,32 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
+    func testRTLLocalizationsAndLayoutDirection() {
+        let expectedRTL: Set<String> = ["ar", "ar-EG", "ar-MA", "fa", "he", "ur"]
+        XCTAssertEqual(L10n.rtlLocalizations, expectedRTL)
+
+        for code in L10n.supportedLocalizations {
+            if expectedRTL.contains(code) {
+                XCTAssertTrue(L10n.isRTL(code), "Expected \(code) to be RTL")
+                XCTAssertEqual(L10n.layoutDirection(for: code), .rightToLeft, "Expected .rightToLeft for \(code)")
+            } else {
+                XCTAssertFalse(L10n.isRTL(code), "Expected \(code) to be LTR")
+                XCTAssertEqual(L10n.layoutDirection(for: code), .leftToRight, "Expected .leftToRight for \(code)")
+            }
+        }
+
+        // Verify normalization, case-insensitivity, and base-language matching
+        XCTAssertTrue(L10n.isRTL("AR"))
+        XCTAssertTrue(L10n.isRTL("ar_EG"))
+        XCTAssertTrue(L10n.isRTL("AR-MA"))
+        XCTAssertTrue(L10n.isRTL("fa_IR"))
+        XCTAssertTrue(L10n.isRTL("he-IL"))
+        XCTAssertTrue(L10n.isRTL("ur_PK"))
+        XCTAssertFalse(L10n.isRTL("en_US"))
+        XCTAssertFalse(L10n.isRTL("fr_MA"))
+        XCTAssertFalse(L10n.isRTL(""))
+    }
+
     func testDefaultEnglishStringsUnchanged() {
         XCTAssertEqual(L10n.string("menu.export_csv", localization: "en"), "Export as CSV...")
         XCTAssertEqual(L10n.string("export.title", localization: "en"), "Export Watchlist")
@@ -71,13 +99,42 @@ final class LocalizationTests: XCTestCase {
         )
     }
 
-    func testFormatPlaceholdersWorkInAllLocales() {
+    func testFormatPlaceholdersWorkInAllLocales() throws {
+        let intKeys = [
+            "list.stocks_count",
+            "list.selected_count",
+            "export.selected_stocks"
+        ]
+        let stringKeys = [
+            "about.version",
+            "error.parsing_failed",
+            "error.cache_parsing_failed"
+        ]
+
         for code in L10n.supportedLocalizations {
-            let stocksCount = L10n.string("list.stocks_count", localization: code)
-            XCTAssertNotNil(stocksCount)
-            if let template = stocksCount {
+            for key in intKeys {
+                let template = try XCTUnwrap(
+                    L10n.string(key, localization: code),
+                    "Missing \(key) in \(code)"
+                )
                 let formatted = String(format: template, Int64(12))
-                XCTAssertTrue(formatted.contains("12"), "Formatted string missing count in \(code): \(formatted)")
+                XCTAssertTrue(
+                    formatted.contains("12"),
+                    "Formatted \(key) missing count in \(code): \(formatted)"
+                )
+            }
+
+            for key in stringKeys {
+                let template = try XCTUnwrap(
+                    L10n.string(key, localization: code),
+                    "Missing \(key) in \(code)"
+                )
+                let token = "TEST_TOKEN"
+                let formatted = String(format: template, token)
+                XCTAssertTrue(
+                    formatted.contains(token),
+                    "Formatted \(key) missing token in \(code): \(formatted)"
+                )
             }
         }
     }

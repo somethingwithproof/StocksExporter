@@ -11,6 +11,7 @@ struct StocksExporterApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .environment(\.layoutDirection, L10n.currentLayoutDirection)
         }
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 800, height: 600)
@@ -32,6 +33,7 @@ struct StocksExporterApp: App {
         Settings {
             SettingsView()
                 .environmentObject(viewModel)
+                .environment(\.layoutDirection, L10n.currentLayoutDirection)
         }
     }
 }

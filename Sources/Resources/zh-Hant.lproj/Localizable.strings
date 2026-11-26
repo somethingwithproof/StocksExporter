@@ -13,9 +13,9 @@
 "sidebar.last_updated" = "最後更新";
 "sidebar.accessibility" = "輔助使用";
 "sidebar.enable" = "啟用";
-"sidebar.stocks_app" = "Stocks App";
+"sidebar.stocks_app" = "Stocks 應用程式";
 "sidebar.launch" = "啟動";
-"data_source.accessibility" = "Stocks App（輔助使用）";
+"data_source.accessibility" = "Stocks 應用程式（輔助使用）";
 "data_source.cache" = "小工具快取";
 "data_source.auto" = "自動偵測";
 "column.symbol" = "代號";
@@ -62,9 +62,9 @@
 "about.description" = "將您的 Apple Stocks 觀察清單匯出為 CSV 或 JSON 格式。";
 "about.footer" = "使用 SwiftUI 製作";
 "error.accessibility_not_authorized" = "未授權輔助使用權限。請在「系統設定」>「隱私權與安全性」>「輔助使用」中啟用。";
-"error.stocks_not_running" = "Stocks App 未執行。請先開啟 Stocks App。";
-"error.could_not_connect" = "無法連線至 Stocks App。";
-"error.watchlist_not_found" = "在 Stocks App 中找不到觀察清單資料。";
+"error.stocks_not_running" = "Stocks 應用程式未執行。請先開啟 Stocks 應用程式。";
+"error.could_not_connect" = "無法連線至 Stocks 應用程式。";
+"error.watchlist_not_found" = "在 Stocks 應用程式中找不到觀察清單資料。";
 "error.parsing_failed" = "無法剖析股票資料：%@";
 "error.cache_not_found" = "找不到股市小工具快取。請確認您的桌面或通知中心已加入 Stocks 小工具。";
 "error.invalid_cache_format" = "快取檔案格式無效或已變更。";
